@@ -45,7 +45,7 @@ services:
      retries: 5
 
  liquibase:
-   image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/liquibase:latest
+   image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/costa-dash-liquibase:latest
    volumes:
      - "./scripts:/changelogs"
    command:
@@ -60,7 +60,7 @@ services:
        condition: service_healthy
 
  api:
-   image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/api:latest
+   image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/costa-dash-api:latest
    env_file:
      - .env
    ports:

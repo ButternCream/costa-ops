@@ -22,3 +22,7 @@ variable "costa_api_port" {
 variable "region" {
   type = string
 }
+
+variable "repo" {
+    type = string
+}

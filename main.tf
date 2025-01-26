@@ -126,7 +126,7 @@ locals {
 
 resource "aws_ecr_repository" "costa-docker-images" {
   for_each             = toset(local.services)
-  name                 = each.key
+  name                 = "${var.repo}-${each.key}"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
