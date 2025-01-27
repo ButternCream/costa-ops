@@ -121,7 +121,7 @@ resource "aws_key_pair" "deployer" {
 }
 
 locals {
-  services = ["api", "liquibase"] # Only custom services that need ECR
+  services = ["api", "bot"] # Only custom services that need ECR
 }
 
 resource "aws_ecr_repository" "costa-docker-images" {
