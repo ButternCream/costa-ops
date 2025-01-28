@@ -24,5 +24,5 @@ variable "region" {
 }
 
 variable "repo" {
-    type = string
+  type = string
 }

@@ -42,6 +42,21 @@ resource "aws_iam_role" "ec2_ecr_role" {
         Principal = {
           Service = "ec2.amazonaws.com"
         }
+      },
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        }
+        Condition = {
+          ArnLike = {
+            "aws:SourceArn" = "arn:aws:ecs:${var.region}:${data.aws_caller_identity.current.account_id}:*"
+          }
+          StringEquals = {
+            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
+          }
+        }
       }
     ]
   })
@@ -74,8 +89,8 @@ resource "aws_iam_instance_profile" "ec2_profile" {
 resource "aws_instance" "costa-dash" {
   ami                    = "ami-0fa40e25bf4dda1f6"
   instance_type          = "t2.micro"
-  user_data              = file("setup.sh")
   key_name               = "aws-key"
+  user_data              = file("setup.sh")
   vpc_security_group_ids = [aws_security_group.main.id]
   iam_instance_profile   = aws_iam_instance_profile.ec2_profile.name
 
@@ -100,15 +115,16 @@ resource "aws_security_group" "main" {
   }
 
   ingress {
-    from_port   = var.postgres_port
-    to_port     = var.postgres_port
+    from_port   = 80
+    to_port     = 80
+    description = "HTTP"
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
   ingress {
-    from_port   = var.costa_api_port
-    to_port     = var.costa_api_port
+    from_port   = 443
+    to_port     = 443
+    description = "HTTPS"
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
