@@ -90,7 +90,7 @@ resource "aws_instance" "costa-dash" {
   ami                    = "ami-0fa40e25bf4dda1f6"
   instance_type          = "t2.micro"
   key_name               = "aws-key"
-  user_data              = file("setup.sh")
+  user_data              = file("scripts/setup.sh")
   vpc_security_group_ids = [aws_security_group.main.id]
   iam_instance_profile   = aws_iam_instance_profile.ec2_profile.name
 
